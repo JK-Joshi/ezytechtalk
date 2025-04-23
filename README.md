@@ -1,0 +1,2 @@
+# ezytechtalk
+tech blog
