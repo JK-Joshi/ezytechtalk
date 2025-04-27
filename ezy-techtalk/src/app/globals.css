@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+/* Define CSS variables for light and dark themes */
+:root {
+  --color-bg: #F1F1F1;  /* themeLight */
+  --color-text: #1f1f1f; /* Opposite of themeLight */
+  --color-muted: #767982; /* gray */
+}
+
+.dark {
+  --color-bg: #1f1f1f;  /* themeDark */
+  --color-text: #F1F1F1; /* Opposite of themeDark */
+  --color-muted: #a1a1aa; /* Lighter gray for dark mode (adjust as needed) */
+}
+
+html,
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+
+  /* Apply the global font family */
+  /* font-family: 'Frank Ruhl Libre', 'Playfair Display', 'Roboto', Arial, Helvetica, sans-serif; */
+  font-family: "Playfair Display", serif;
+}
+
+p {
+  font-family: "Playfair Display", serif;
+}
