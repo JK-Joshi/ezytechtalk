@@ -18,21 +18,25 @@ import ThemeToggleButton from '../ThemeToggleButton';
 
 //Third Party Imports
 import { Icon } from "@iconify/react";
+import NextLink from 'next/link';
+import { useRouter } from 'next/navigation';
 
 //Context Imports
 import { useTheme } from '@/context/ThemeContext';
 
 type MenuItems = string[]
 
-const menuItems: MenuItems = ["Home", "Tranding", "Web Development", "Technology"]
+const menuItems: MenuItems = ["Home", "Technology", "Programming", "Automobiles", "AI"];
 
 const Header = () => {
     const { theme } = useTheme();
     const muiTheme = useMuiTheme();
     const isMobile = useMediaQuery(muiTheme.breakpoints.down('md'));
+    const router = useRouter();
 
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [isSearchVisible, setIsSearchVisible] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
 
     const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
         if (
@@ -46,6 +50,19 @@ const Header = () => {
 
     const handleSearchToggle = () => {
         setIsSearchVisible(!isSearchVisible);
+        if (isSearchVisible) {
+            setSearchQuery('');
+        }
+    };
+
+    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchQuery(event.target.value);
+    };
+
+    const handleSearchSubmit = () => {
+        if (searchQuery.trim()) {
+            router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+        }
     };
 
     const socialMediaIcons = (
@@ -80,19 +97,24 @@ const Header = () => {
 
     const menuNavigation = (
         <List sx={{ width: '100%', pt: 0 }}>
-            {menuItems?.map((item, index) => (
-                <ListItem key={item + index} disablePadding>
-                    <ListItemButton sx={{ textAlign: 'center', py: 1.5 }}>
-                        <ListItemText
-                            primary={item}
-                            sx={{
-                                color: 'var(--color-text)',
-                                '.MuiTypography-root': { fontFamily: 'Playfair Display' }
-                            }}
-                        />
-                    </ListItemButton>
-                </ListItem>
-            ))}
+            {menuItems?.map((item, index) => {
+                const href = item === "Home" ? "/" : `/category/${item.toLowerCase().replace(/\s+/g, '-')}`;
+                return (
+                    <ListItem key={item + index} disablePadding>
+                        <NextLink href={href} passHref legacyBehavior>
+                            <ListItemButton component="a" sx={{ textAlign: 'center', py: 1.5 }}>
+                                <ListItemText
+                                    primary={item}
+                                    sx={{
+                                        color: 'var(--color-text)',
+                                        '.MuiTypography-root': { fontFamily: 'Playfair Display' }
+                                    }}
+                                />
+                            </ListItemButton>
+                        </NextLink>
+                    </ListItem>
+                );
+            })}
         </List>
     );
 
@@ -127,6 +149,13 @@ const Header = () => {
             variant="outlined"
             placeholder="Search..."
             autoFocus={isMobile && isSearchVisible}
+            value={searchQuery}
+            onChange={handleSearchChange}
+            onKeyPress={(event) => {
+                if (event.key === 'Enter') {
+                    handleSearchSubmit();
+                }
+            }}
             InputProps={{
                 startAdornment: isMobile && isSearchVisible ? (
                     <InputAdornment position="start">
@@ -137,7 +166,9 @@ const Header = () => {
                 ) : null,
                 endAdornment: (
                     <InputAdornment position="end">
-                        <SearchIcon sx={{ fontSize: '1.2rem', color: 'var(--color-muted)', mr: 0.5 }} />
+                        <IconButton onClick={handleSearchSubmit} size="small" sx={{ color: 'var(--color-muted)', mr: 0.5 }} aria-label="submit search">
+                            <SearchIcon sx={{ fontSize: '1.2rem' }} />
+                        </IconButton>
                     </InputAdornment>
                 ),
             }}
@@ -249,38 +280,51 @@ const Header = () => {
             <Divider sx={{ display: { xs: 'none', md: 'block' }, my: 3, width: '100%', borderColor: 'var(--color-muted)' }} />
 
             <Box sx={{ display: { xs: 'none', md: 'flex' }, justifyContent: 'center', alignItems: 'center', gap: '1.5rem', width: '100%' }}>
-                {menuItems?.map((item, index) => (
-                    <Typography
-                        key={item + index}
-                        sx={{
-                            position: 'relative',
-                            color: ('var--color-muted'),
-                            cursor: 'pointer',
-                            overflow: 'hidden', // hide the growing underline
-                            ':after': {
-                                content: '""',
-                                position: 'absolute',
-                                width: '0%',
-                                height: '2px',
-                                bottom: 0,
-                                left: 0,
-                                backgroundColor: ('var--color-bg'),
-                                transition: 'width 0.3s ease',
-                            },
-                            ':hover': {
-                                color: ('var--color-bg'),
-                                ':after': {
-                                    width: '100%',
-                                },
-                            },
-                        }}
-                    >
-                        {item}
-                    </Typography>
-                ))}
+                {menuItems?.map((item, index) => {
+                    const href = item === "Home" ? "/" : `/category/${item.toLowerCase().replace(/\s+/g, '-')}`;
+                    return (
+                        <NextLink key={item + index} href={href} passHref legacyBehavior>
+                            <Typography
+                                component="a"
+                                sx={{
+                                    position: 'relative',
+                                    color: 'var(--color-text)',
+                                    cursor: 'pointer',
+                                    fontFamily: 'Playfair Display',
+                                    textDecoration: 'none',
+                                    pb: 0.5,
+                                    '&:hover::after': {
+                                        content: '""',
+                                        position: 'absolute',
+                                        width: '100%',
+                                        height: '2px',
+                                        bottom: 0,
+                                        left: '50%',
+                                        transform: 'translateX(-50%)',
+                                        backgroundColor: 'var(--color-text)',
+                                        transition: 'width 0.3s ease-in-out',
+                                    },
+                                    '&::after': {
+                                        content: '""',
+                                        position: 'absolute',
+                                        width: '0%',
+                                        height: '2px',
+                                        bottom: 0,
+                                        left: '50%',
+                                        transform: 'translateX(-50%)',
+                                        backgroundColor: 'var(--color-text)',
+                                        transition: 'width 0.3s ease-in-out',
+                                    }
+                                }}
+                            >
+                                {item}
+                            </Typography>
+                        </NextLink>
+                    );
+                })}
             </Box>
 
-            <Divider sx={{ display: { xs: 'none', md: 'block' }, mt: 3, width: '100%', borderColor: 'var(--color-text)', borderBottomWidth: '2px' }} />
+            <Divider sx={{ display: { xs: 'none', md: 'block' }, mt: 3, width: '100%', borderColor: 'var(--color-text)', borderBottomWidth: 'medium' }} />
 
             <Drawer
                 anchor='left'
