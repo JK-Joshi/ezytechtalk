@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Container, Box, Typography, Link as MuiLink, Grid, IconButton } from '@mui/material';
+import { Container, Box, Typography, Link as MuiLink, IconButton } from '@mui/material';
 import NextLink from 'next/link';
 import { Icon } from '@iconify/react'; // For social media icons
 
@@ -36,19 +36,19 @@ const Footer = () => {
             }}
         >
             <Container maxWidth="lg">
-                <Grid container spacing={{ xs: 4, md: 5 }} justifyContent="space-between">
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: { xs: 4, md: 0 } }}>
                     {/* Column 1: Website Purpose / About */}
-                    <Grid item xs={12} md={4}>
+                    <Box sx={{ width: { xs: '100%', md: '30%' }, mb: { xs: 3, md: 0} }}>
                         <Typography variant="h6" gutterBottom sx={{ fontFamily: 'Playfair Display', fontWeight: 'bold' }}>
                             World-Tech Tube
                         </Typography>
                         <Typography variant="body2" sx={{ color: 'var(--color-muted)', lineHeight: 1.7 }}>
                             Your daily source for the latest in technology, web development, and programming. Stay updated with insightful articles, tutorials, and news. We aim to make complex tech topics easy and accessible for everyone.
                         </Typography>
-                    </Grid>
+                    </Box>
 
                     {/* Column 2: Useful Links */}
-                    <Grid item xs={12} sm={6} md={3}>
+                    <Box sx={{ width: { xs: '100%', sm: '48%', md: '25%' }, mb: { xs: 3, md: 0} }}>
                         <Typography variant="h6" gutterBottom sx={{ fontFamily: 'Playfair Display', fontWeight: 'bold' }}>
                             Useful Links
                         </Typography>
@@ -70,10 +70,10 @@ const Footer = () => {
                                 </Box>
                             ))}
                         </Box>
-                    </Grid>
+                    </Box>
 
                     {/* Column 3: Social Media */}
-                    <Grid item xs={12} sm={6} md={3}>
+                    <Box sx={{ width: { xs: '100%', sm: '48%', md: '25%' }, mb: { xs: 3, md: 0} }}>
                         <Typography variant="h6" gutterBottom sx={{ fontFamily: 'Playfair Display', fontWeight: 'bold' }}>
                             Connect With Us
                         </Typography>
@@ -94,8 +94,8 @@ const Footer = () => {
                                 </IconButton>
                             ))}
                         </Box>
-                    </Grid>
-                </Grid>
+                    </Box>
+                </Box>
 
                 {/* Copyright Section */}
                 <Box

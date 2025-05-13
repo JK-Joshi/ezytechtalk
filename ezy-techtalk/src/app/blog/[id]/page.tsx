@@ -3,9 +3,9 @@
 import React from 'react';
 import { Container, Typography, Box, Paper, Avatar, Divider, CircularProgress, Alert, Card, CardMedia, CardContent, Link as MuiLink } from "@mui/material";
 import { useParams } from 'next/navigation'; // To get the [id] from URL
-import { Blog, blogsData, Author } from '@/data/blogsData'; // Import blog data and types
-import { useTheme } from '@/context/ThemeContext'; // Your custom theme context
+import { Blog, blogsData } from '@/data/blogsData'; // Import blog data and types
 import NextLink from 'next/link';
+import NextImage from 'next/image'; // Import NextImage
 
 // Helper function to format date (copied from HomePageClient)
 const formatDate = (dateString: string) => {
@@ -123,7 +123,6 @@ const RightSectionItem: React.FC<{ blog: Blog }> = ({ blog }) => {
 };
 
 export default function BlogPostPage() {
-  const { theme } = useTheme(); // For styling based on theme
   const params = useParams();
   const blogId = params?.id as string; // Get blog ID from URL parameters
   const headerHeight = 80; // ADJUST THIS to your actual header height for sticky positioning
@@ -201,25 +200,26 @@ export default function BlogPostPage() {
                         <Box sx={{
                             mb: 3, 
                             borderRadius: '8px', 
-                            overflow: 'hidden',
+                            overflow: 'hidden', // Keep this to clip the NextImage
+                            position: 'relative', // Needed for layout="fill"
+                            width: '100%', // Ensure the box takes full width
+                            height: { xs: '300px', sm: '400px', md: '500px' }, // Responsive height
                             transition: 'box-shadow 0.3s ease-in-out',
                             '&:hover': {
                                 boxShadow: '0 4px 12px rgba(0,0,0,0.12)'
                             },
-                            '&:hover img': {
+                            '&:hover img': { // Target the img rendered by NextImage
                                 transform: 'scale(1.05)'
                             }
                         }}>
-                            <img 
+                            <NextImage 
                                 src={blog.image} 
                                 alt={blog.title} 
-                                style={{ 
-                                    width: '100%', 
-                                    maxHeight: '500px', 
-                                    display:'block', 
-                                    objectFit: 'cover', 
-                                    transition: 'transform 0.3s ease-in-out'
-                                }} 
+                                layout="fill"
+                                objectFit="cover" // Similar to style objectFit: 'cover'
+                                style={{
+                                    transition: 'transform 0.3s ease-in-out' // Style for NextImage
+                                }}
                             />
                         </Box>
                     )}

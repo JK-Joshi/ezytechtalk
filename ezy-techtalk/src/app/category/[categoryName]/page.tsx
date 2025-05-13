@@ -1,11 +1,10 @@
 'use client';
 
 import React from 'react';
-import { Container, Typography, Box, CircularProgress, Alert, Grid } from "@mui/material";
+import { Container, Typography, Box, CircularProgress, Alert } from "@mui/material";
 import { useParams } from 'next/navigation';
 import { Blog, blogsData } from '@/data/blogsData';
-import { TrendingBlogCard } from '@/app/HomePageClient'; // Assuming TrendingBlogCard is exported from HomePageClient or a shared components file
-import NextLink from 'next/link';
+import { TrendingBlogCard } from '@/app/HomePageClient'; // Assuming TrendingBlogCard is exported from HomePageClient or a shared components file=
 
 // Helper function to format category name from slug (optional, if needed for display)
 const formatCategoryName = (slug: string): string => {
@@ -51,21 +50,24 @@ export default function CategoryPage() {
       </Box>
 
       {filteredBlogs.length === 0 ? (
-        <Alert severity="info">No posts found in the "{categoryDisplayName}" category.</Alert>
+        <Alert severity="info">No posts found in the &quot;{categoryDisplayName}&quot; category.</Alert>
       ) : (
-        <Grid container spacing={3}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', mx: -1.5 }}>
           {filteredBlogs.map(blog => (
-            <Grid item xs={12} sm={6} md={4} key={blog.id}>
-              {/* 
-                Assuming TrendingBlogCard is suitable here.
-                If TrendingBlogCard is not exported from HomePageClient.tsx, 
-                it needs to be moved to a shared location and imported properly.
-                Or, a different card component can be used.
-              */}
+            <Box 
+              key={blog.id} 
+              sx={{ 
+                flexGrow: 0,
+                flexShrink: 0,
+                flexBasis: { xs: '100%', sm: '50%', md: '33.3333%' },
+                maxWidth: { xs: '100%', sm: '50%', md: '33.3333%' },
+                p: 1.5
+              }}
+            >
               <TrendingBlogCard blog={blog} type="trending" /> 
-            </Grid>
+            </Box>
           ))}
-        </Grid>
+        </Box>
       )}
     </Container>
   );

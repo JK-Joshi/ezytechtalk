@@ -2,10 +2,10 @@
 
 import React from 'react';
 import {
-    Container, Typography, Box, Paper, Avatar, Card, CardMedia, CardContent, Divider, Chip, Link as MuiLink
+    Container, Typography, Box, Avatar, Card, CardMedia, CardContent, Chip, Link as MuiLink
 } from "@mui/material";
 import { Blog, blogsData } from '@/data/blogsData';
-import { useTheme } from '@/context/ThemeContext';
+// import { useTheme } from '@/context/ThemeContext'; // Removed unused import
 import NextLink from 'next/link'; // For navigation
 
 // Helper function to format date (optional)
@@ -199,9 +199,7 @@ export const TrendingBlogCard: React.FC<BlogCardProps> = ({ blog }) => {
   );
 };
 
-export default function HomePageClient() {
-  const { theme } = useTheme();
-  const headerHeight = 80; // Approximate height of your sticky header, adjust as needed
+export default function HomePageClient() { // Approximate height of your sticky header, adjust as needed
 
   // Filter blogs based on the new displayPlacement property
   const secondaryBlogs = blogsData
